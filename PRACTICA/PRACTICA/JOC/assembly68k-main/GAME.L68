@@ -1,0 +1,208 @@
+00000000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 17/01/2023 0:41:28
+
+00000000                             1  ; ==============================================================================
+00000000                             2  ; GAME MANAGEMENT
+00000000                             3  ; ==============================================================================
+00000000                             4  
+00000000                             5  ; ------------------------------------------------------------------------------
+00000000                             6  GAMINIT
+00000000                             7  ; INITIALIZES THE GAME
+00000000                             8  ; INPUT    : NONE
+00000000                             9  ; OUTPUT   : NONE
+00000000                            10  ; MODIFIES : NONE
+00000000                            11  ; ------------------------------------------------------------------------------
+00000000  48A7 FC00                 12              MOVEM.W D0-D5,-(A7)
+00000004  48E7 0070                 13              MOVEM.L A1-A3,-(A7)
+00000008                            14              
+00000008  303C 003C                 15              MOVE.W  #60,D0
+0000000C  323C 0000                 16              MOVE.W  #$0000,D1       ; TURNING OFF MOUSE
+00000010  4E4F                      17              TRAP    #15
+00000012                            18              
+Line 19 ERROR: Undefined symbol
+00000012  42B9 004DBD16             19              CLR.L   (SECONDS)
+00000018                            20              
+Line 21 ERROR: Undefined symbol
+00000018  4EB9 004DBD16             21              JSR UTLRAND
+0000001E  6000 0006                 22              BRA .1STRTRY
+Line 23 ERROR: Comma expected
+00000022                            23  .1STROOM    SUB.W   #MAXOBSXROOM-1,D0
+Line 24 ERROR: Symbol value differs between first and second pass
+00000022                            24  .1STRTRY    CMP.W   #MAXOBSXROOM,D0
+00000022  6E00 FFFE                 25              BGT.W   .1STROOM
+00000026                            26              
+00000026  3A00                      27              MOVE.W  D0,D5
+00000028                            28              
+Line 29 ERROR: Undefined symbol
+00000028  4EB9 004DBD16             29              JSR UTLRAND
+0000002E  6000 000E                 30              BRA .2NDRTRY
+Line 31 ERROR: Symbol value differs between first and second pass
+00000032                            31  .2NDROOM    SUB.W   #MAXOBSXROOM-1,D0
+Line 32 ERROR: Symbol value differs between first and second pass
+00000032                            32  .2NDRTRY    CMP.W   #MAXOBSXROOM,D0
+00000032  6E00 0006                 33              BGT.W   .2NDROOM
+00000036                            34              
+00000036  3400                      35              MOVE.W  D0,D2
+00000038                            36              
+Line 37 ERROR: Undefined symbol
+00000038  4EB9 004DBD16             37              JSR UTLRAND
+0000003E  6000 0016                 38              BRA .3RDRTRY
+Line 39 ERROR: Symbol value differs between first and second pass
+00000042                            39  .3RDROOM    SUB.W   #MAXOBSXROOM-1,D0
+Line 40 ERROR: Symbol value differs between first and second pass
+00000042                            40  .3RDRTRY    CMP.W   #MAXOBSXROOM,D0
+00000042  6E00 000E                 41              BGT.W   .3RDROOM
+00000046                            42              
+00000046  3600                      43              MOVE.W  D0,D3
+00000048                            44              
+Line 45 ERROR: Undefined symbol
+00000048  4EB9 004DBD16             45              JSR UTLRAND
+0000004E  6000 001E                 46              BRA .4THRTRY
+Line 47 ERROR: Symbol value differs between first and second pass
+00000052                            47  .4THROOM    SUB.W   #MAXOBSXROOM-1,D0
+Line 48 ERROR: Symbol value differs between first and second pass
+00000052                            48  .4THRTRY    CMP.W   #MAXOBSXROOM,D0
+00000052  6E00 0016                 49              BGT.W   .4THROOM
+00000056                            50              
+00000056  3800                      51              MOVE.W  D0,D4
+00000058                            52              
+00000058                            53              ; AGLADD
+Line 54 ERROR: Undefined symbol
+00000058  3239 004DBD16             54              MOVE.W  (LOADEDMAP),D1
+Line 55 ERROR: Undefined symbol
+0000005E  43F9 004DBD16             55              LEA     OBSINIT,A1
+Line 56 ERROR: Undefined symbol
+00000064  45F9 004DBD16             56              LEA     STAEMPTY,A2
+Line 57 ERROR: Undefined symbol
+0000006A  47F9 004DBD16             57              LEA     OBSPLOT,A3
+Line 58 ERROR: Undefined symbol
+00000070  303C BD16                 58              MOVE.W  #OBSTYPE,D0
+00000074                            59              
+Line 60 ERROR: Symbol value differs between first and second pass
+00000074                            60  .LOOP1      
+Line 61 ERROR: Undefined symbol
+00000074  4EB9 004DBD16             61              JSR     AGLADD
+0000007A  51CD 0018                 62              DBRA.W  D5,.LOOP1
+0000007E                            63              
+0000007E  5241                      64              ADDQ.W  #1,D1
+Line 65 ERROR: Symbol value differs between first and second pass
+00000080                            65  .LOOP2      JSR     AGLADD
+00000080  51CA 001E                 66              DBRA.W  D2,.LOOP2
+00000084                            67              
+00000084  5241                      68              ADDQ.W  #1,D1
+Line 69 ERROR: Symbol value differs between first and second pass
+00000086                            69  .LOOP3      JSR     AGLADD
+00000086  51CB 0024                 70              DBRA.W  D3,.LOOP3
+0000008A                            71          
+0000008A  5241                      72              ADDQ.W  #1,D1
+Line 73 ERROR: Symbol value differs between first and second pass
+0000008C                            73  .LOOP4      JSR     AGLADD
+0000008C  51CC 002A                 74              DBRA.W  D4,.LOOP4
+00000090                            75  
+00000090  4CDF 0E00                 76              MOVEM.L (A7)+,A1-A3
+00000094  4C9F 003F                 77              MOVEM.W (A7)+,D0-D5
+00000098  4E75                      78              RTS
+0000009A                            79              
+0000009A                            80  
+0000009A                            81  ; ------------------------------------------------------------------------------
+Line 82 ERROR: Symbol value differs between first and second pass
+0000009A                            82  GAMUPD
+0000009A                            83  ; UPDATES THE GAME
+0000009A                            84  ; INPUT    : NONE
+0000009A                            85  ; OUTPUT   : NONE
+0000009A                            86  ; MODIFIES : NONE
+0000009A                            87  ; ------------------------------------------------------------------------------
+0000009A  48E7 8070                 88              MOVEM.L D0/A1-A3,-(A7)
+0000009E                            89              
+0000009E                            90              ; CHECK IF MUSIC IS ALREADY PLAYING 
+Line 91 ERROR: Undefined symbol
+0000009E  1039 004DBD16             91              MOVE.B MUSICPLAYED, D0
+000000A4  B07C 0001                 92              CMP #1, D0
+000000A8  6700 003A                 93              BEQ .NOMUSIC
+Line 94 ERROR: Undefined symbol
+000000AC  4EB9 004DBD16             94              JSR AUDPLAY
+000000B2                            95  ; GENERAL UPDATES
+Line 96 ERROR: Symbol value differs between first and second pass
+000000B2                            96  .NOMUSIC    JSR PLAYERUPD   
+Line 97 ERROR: Undefined symbol
+000000B2  4EB9 004DBD16             97              JSR MAPUPD
+000000B8                            98  ; SHOTS LOGIC         
+Line 99 ERROR: Undefined symbol
+000000B8  1039 004DBD16             99              MOVE.B  (KBDEDGE),D0
+000000BE  C03C 00F0                100              AND.B #%11110000,D0 ; SI DA CERO NO HA DISPARADO
+000000C2  675A                     101              BEQ.B .NOTFIRED
+Line 102 ERROR: Undefined symbol
+000000C4  4EB9 004DBD16            102              JSR FIREDSOUND
+Line 103 ERROR: Undefined symbol
+000000CA  43F9 004DBD16            103              LEA     PROJINIT,A1
+Line 104 ERROR: Undefined symbol
+000000D0  45F9 004DBD16            104              LEA     PROJUPD,A2
+Line 105 ERROR: Undefined symbol
+000000D6  47F9 004DBD16            105              LEA     PROJPLOT,A3
+Line 106 ERROR: Undefined symbol
+000000DC  303C BD16                106              MOVE.W  #PROJTYPE,D0
+Line 107 ERROR: Undefined symbol
+000000E0  4EB9 004DBD16            107              JSR     AGLADD
+Line 108 ERROR: Symbol value differs between first and second pass
+000000E6                           108  .NOTFIRED
+Line 109 ERROR: Undefined symbol
+000000E6  4EB9 004DBD16            109              JSR     AGLUPD
+000000EC  4CDF 0E01                110              MOVEM.L (A7)+,D0/A1-A3
+000000F0  4E75                     111              RTS
+000000F2                           112  
+000000F2                           113  ; ------------------------------------------------------------------------------
+Line 114 ERROR: Symbol value differs between first and second pass
+000000F2                           114  GAMPLOT
+000000F2                           115  ; PLOTS THE GAME
+000000F2                           116  ; INPUT    : NONE
+000000F2                           117  ; OUTPUT   : NONE
+000000F2                           118  ; MODIFIES : NONE
+000000F2                           119  ; ------------------------------------------------------------------------------
+Line 120 ERROR: Undefined symbol
+000000F2  4EB9 004DBD16            120              JSR     BLOCKSPLOT  
+Line 121 ERROR: Undefined symbol
+000000F8  4EB9 004DBD16            121              JSR     AGLPLOT
+Line 122 ERROR: Undefined symbol
+000000FE  6000 BC16                122              BRA     PLAYERPLOT
+00000102                           123  
+00000102                           124  
+00000102                           125  
+00000102                           126  
+00000102                           127  
+00000102                           128  
+00000102                           129  
+00000102                           130  
+00000102                           131  
+00000102                           132  
+00000102                           133  
+00000102                           134  
+00000102                           135  
+00000102                           136  
+00000102                           137  
+Line 138 WARNING: END directive missing, starting address not set
+
+41 errors detected
+1 warning generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+GAMINIT             0
+GAMINIT:1STROOM     22
+GAMINIT:1STRTRY     26
+GAMINIT:2NDROOM     3A
+GAMINIT:2NDRTRY     3E
+GAMINIT:3RDROOM     52
+GAMINIT:3RDRTRY     56
+GAMINIT:4THROOM     6A
+GAMINIT:4THRTRY     6E
+GAMINIT:LOOP1       94
+GAMINIT:LOOP2       A0
+GAMINIT:LOOP3       AC
+GAMINIT:LOOP4       B8
+GAMPLOT             12A
+GAMUPD              CC
+GAMUPD:NOMUSIC      E4
+GAMUPD:NOTFIRED     11E

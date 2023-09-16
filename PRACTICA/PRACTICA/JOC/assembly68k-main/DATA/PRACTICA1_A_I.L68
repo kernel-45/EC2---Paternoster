@@ -1,0 +1,111 @@
+00001044 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 03/04/2023 10:25:16
+
+00000000                             1  *--------------------------------------------
+00000000                             2  * Titulo : P1 (2022-2023) - Caesar Cipher
+00000000                             3  * Autores: Adrian Morales Orta, Iker García de León 
+00000000                             4  *--------------------------------------------
+00001000                             5            ORG $1000
+00001000  =00000003                  6  DISP: EQU 3
+00001000  =00000005                  7  DICT_SIZE: EQU 5
+00001000= 41 42 43 44 45             8  DICT_IN: DC.B 'ABCDE'
+00001005                             9  DICT_OUT: DS.B DICT_SIZE
+0000100A  =0000001A                 10  TEXT_SIZE: EQU 26
+0000100A= 45 53 54 52 55 43 ...     11  TEXT_IN: DC.B 'ESTRUCTURA DE COMPUTADORES'
+00001024                            12  TEXT_OUT: DS.B TEXT_SIZE
+0000103E                            13  NCHANGES: DS.W 1
+00001040                            14            DS.W 0
+00001040                            15  *--------------------------------------------
+00001040                            16  CHARACT DS.B 1
+00001041                            17  POSACT  DS.B 1
+00001042                            18  POSFUT  DS.B 1
+00001044                            19            DS.W 0
+00001044                            20  
+00001044                            21  START:    
+00001044  1038 0005                 22            MOVE.B DICT_SIZE, D0
+00001048  5340                      23            SUBQ #1, D0
+0000104A  11FC 0001 1041            24            MOVE.B #1, POSACT
+00001050  11F8 1041 1042            25            MOVE.B POSACT, POSFUT
+00001056  5638 1042                 26            ADD.B #DISP, POSFUT
+0000105A  41F8 1000                 27            LEA DICT_IN, A0
+0000105E  43F8 1005                 28            LEA DICT_OUT, A1
+00001062                            29  LOOP_DICT_OUT:
+00001062  4EB9 000010C6             30            JSR INRANGE
+00001068  1368 1041 1042            31            MOVE.B POSACT(A0),POSFUT(A1)
+0000106E  51C8 FFF2                 32            DBRA D0, LOOP_DICT_OUT 
+00001072                            33            ;UNA VEZ FINALIZADO
+00001072                            34            
+00001072                            35            ;SUSTITUIMOS LAS LETRAS DE TEXT_IN
+00001072                            36            ;PREPARAMOS BUCLE RECORRIDO DEL TEXTO
+00001072  303C 001A                 37            MOVE.W #TEXT_SIZE, D0
+00001076  5340                      38            SUBQ #1, D0
+00001078                            39            
+00001078  41F8 100A                 40            LEA TEXT_IN, A0
+0000107C  43F8 1024                 41            LEA TEXT_OUT, A1
+00001080  31FC 0000 103E            42            MOVE.W #0, NCHANGES
+00001086                            43  REC_TEXTO: 
+00001086                            44            ;LETRA DE TEXT IN A CARACTER ACTUAL
+00001086  11D8 1040                 45            MOVE.B (A0)+, CHARACT
+0000108A                            46            ;RECORRIDO DE LOS DICCIONARIOS
+0000108A  343C 0005                 47            MOVE.W #DICT_SIZE, D2
+0000108E  5342                      48            SUBQ #1, D2
+00001090  45F8 1000                 49            LEA DICT_IN, A2
+00001094  47F8 1005                 50            LEA DICT_OUT, A3
+00001098                            51  REC_DIC:            
+00001098                            52            ;LETRA DEL DICCIONARIO COMPARADA CON CARACTER ACTUAL
+00001098  161A                      53            MOVE.B (A2)+, D3
+0000109A                            54            ;SI ES IGUAL, HAY QUE SUSTITUIRLA 
+0000109A  B638 1040                 55            CMP.B CHARACT, D3
+0000109E  6700 0016                 56            BEQ IGUALES
+000010A2                            57            ;SI NO SON IGUALES
+000010A2  524B                      58            ADDA #1, A3
+000010A4  51CA FFF2                 59            DBRA D2, REC_DIC
+000010A8  12F8 1040                 60            MOVE.B CHARACT, (A1)+
+000010AC  51C8 FFD8                 61            DBRA D0, REC_TEXTO
+000010B0  4EF9 000010E0             62            JMP FIN
+000010B6                            63  IGUALES:  
+000010B6  5278 103E                 64            ADDQ #1, NCHANGES
+000010BA  12D3                      65            MOVE.B (A3),(A1)+ 
+000010BC  51C8 FFC8                 66            DBRA D0, REC_TEXTO
+000010C0  4EF9 000010E0             67            JMP FIN
+000010C6                            68  INRANGE: 
+000010C6  1638 0005                 69            MOVE.B DICT_SIZE, D3
+000010CA  1838 1042                 70            MOVE.B POSFUT, D4
+000010CE  B678 1042                 71            CMP POSFUT, D3
+000010D2  6E00 000A                 72            BGT NADA
+000010D6  9838 0005                 73            SUB.B DICT_SIZE, D4
+000010DA  11C4 1042                 74            MOVE.B D4, POSFUT
+000010DE                            75  NADA: 
+000010DE  4E75                      76            RTS
+000010E0                            77  FIN:
+000010E0                            78  
+000010E0  FFFF FFFF                 79            SIMHALT
+000010E4                            80            END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CHARACT             1040
+DICT_IN             1000
+DICT_OUT            1005
+DICT_SIZE           5
+DISP                3
+FIN                 10E0
+IGUALES             10B6
+INRANGE             10C6
+LOOP_DICT_OUT       1062
+NADA                10DE
+NCHANGES            103E
+POSACT              1041
+POSFUT              1042
+REC_DIC             1098
+REC_TEXTO           1086
+START               1044
+TEXT_IN             100A
+TEXT_OUT            1024
+TEXT_SIZE           1A
